@@ -79,3 +79,13 @@ See `/docs/roadmap/roadmap.md` for:
 /src (future firmware)
 /hardware (future PCB files)
 
+---
+
+## 🧪 Status
+Currently in **Concept Prototype** phase.
+
+---
+
+## 📄 License
+To be added.
+
