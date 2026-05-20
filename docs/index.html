@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURORAE | Modular Smart Tabletop Gaming Platform</title>
+  <meta name="description" content="AURORAE is a modular smart tabletop gaming platform using ESP32, addressable LEDs, NFC tile detection, embedded game logic, and physical word-board interaction.">
+  <style>
+    :root {
+      --ink: #101828;
+      --deep: #141033;
+      --violet: #5b2aa8;
+      --blue: #1f6feb;
+      --cyan: #007180;
+      --gold: #b7791f;
+      --muted: #667085;
+      --line: #d8e0ea;
+      --soft: #f6f8fc;
+      --panel: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--deep);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 56px 0 34px;
+      background: linear-gradient(180deg, #f8f7ff 0%, #ffffff 72%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(360px, 1.12fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--violet);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 43px;
+      line-height: 1.06;
+      letter-spacing: 0;
+      color: var(--deep);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 640px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--deep);
+      background: #fff;
+    }
+
+    .button.primary {
+      color: #fff;
+      border-color: var(--violet);
+      background: var(--violet);
+    }
+
+    .architecture {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: 0 18px 45px rgba(20, 16, 51, 0.14);
+    }
+
+    .architecture img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    section {
+      padding: 42px 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: var(--deep);
+    }
+
+    .section-lead {
+      margin: 0 0 24px;
+      color: var(--muted);
+      max-width: 820px;
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: var(--panel);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: var(--deep);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .band {
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stage {
+      background: #fff;
+      border-left: 4px solid var(--violet);
+      border-radius: 6px;
+      padding: 18px;
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stage strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .stage p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      border: 1px solid #e8c36d;
+      background: #fff8e6;
+      border-radius: 8px;
+      padding: 18px;
+      color: #4f3600;
+    }
+
+    .link-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .link-list li {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 0;
+    }
+
+    footer {
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .grid,
+      .timeline,
+      .link-list {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap" aria-label="Primary navigation">
+      <div class="brand">AURORAE</div>
+      <div class="nav-links">
+        <a href="#architecture">Architecture</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#docs">Docs</a>
+        <a href="https://github.com/peterobanife/AURORAE">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Modular smart tabletop gaming platform</p>
+          <h1>A physical word board that senses tiles, lights the play surface, and brings game logic into the board itself.</h1>
+          <p class="lead">AURORAE combines embedded hardware, NFC/RFID tile detection, addressable LED feedback, and game-state logic for hybrid physical-digital tabletop play.</p>
+          <p class="lead">The current Phase 1 build is a self-funded 5x5 proof-of-concept using ESP32, WS2812B LEDs, NFC-tagged tiles, and simple word-detection logic.</p>
+          <div class="actions">
+            <a class="button primary" href="#docs">Explore Documentation</a>
+            <a class="button" href="architecture/system_architecture.html">System Architecture</a>
+          </div>
+        </div>
+        <figure class="architecture" id="architecture">
+          <img src="architecture/diagrams/aurorae_system_architecture.png" alt="AURORAE modular smart tile system architecture diagram">
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Phase 1 Build</h2>
+        <p class="section-lead">The first prototype is intentionally small: prove the interaction loop before scaling to a full-size board. The goal is a visible demo where a physical tile is read by the board and produces meaningful lighting or scoring feedback.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Tile Detection</h3>
+            <p>NFC/RFID-tagged letter tiles provide identity data that the board can map to word and scoring logic.</p>
+          </article>
+          <article class="card">
+            <h3>LED Feedback</h3>
+            <p>Addressable LEDs show active squares, detected tiles, word validation, scoring events, and future gameplay modes.</p>
+          </article>
+          <article class="card">
+            <h3>Embedded Logic</h3>
+            <p>An ESP32 coordinates sensor input, LED output, simple game rules, serial logging, and future communication features.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="roadmap">
+      <div class="wrap">
+        <h2>Prototype Roadmap</h2>
+        <p class="section-lead">AURORAE is being developed through staged builds so each prototype answers a practical engineering question before the design becomes larger, foldable, and more product-like.</p>
+        <div class="timeline">
+          <div class="stage">
+            <strong>Concept Prototype</strong>
+            <p>Single 5x5 board, LED feedback, one NFC reader, tagged sample tiles, and simple word demos.</p>
+          </div>
+          <div class="stage">
+            <strong>V0 Multi-Board Prototype</strong>
+            <p>Improved sensing, board synchronization, cleaner wiring, better enclosure, and basic gameplay states.</p>
+          </div>
+          <div class="stage">
+            <strong>V1 Product Demo</strong>
+            <p>Refined board surface, stronger tile recognition, score logic, display/app integration, and investor-ready demo material.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="docs">
+      <div class="wrap">
+        <h2>Documentation</h2>
+        <p class="section-lead">The repository documents the hardware architecture, interaction model, communication design, and roadmap as the prototype moves from concept to working build.</p>
+        <ul class="link-list">
+          <li><a href="architecture/system_architecture.html">System architecture overview</a></li>
+          <li><a href="architecture/hw_fw_interaction.html">Hardware and firmware interaction</a></li>
+          <li><a href="modularity/modular_board_concept.html">Modular board concept</a></li>
+          <li><a href="integration/lighting_sensor_integration.html">Lighting and sensor integration</a></li>
+          <li><a href="interaction/interaction_patterns.html">Interaction patterns</a></li>
+          <li><a href="communication/communication_protocol.html">Communication protocol</a></li>
+          <li><a href="roadmap/roadmap.html">Project roadmap</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="status">
+          <strong>Prototype status:</strong> AURORAE is in Phase 1 physical build. The first public proof target is a stable 5x5 demo where NFC-tagged tiles trigger LED feedback and simple word/scoring logic. Always power off before wiring changes and verify voltage/grounding before integration.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">AURORAE | Modular smart tabletop gaming platform | <a href="https://github.com/peterobanife/AURORAE">View on GitHub</a></div>
+  </footer>
+</body>
+</html>
