@@ -2,6 +2,8 @@
 
 This document provides a high‑level overview of the AURORAE system, describing how modular boards, sensors, lighting, communication, and firmware interact. It serves as the foundation for firmware, hardware, and interaction design.
 
+---
+
 ![AURORAE System Architecture](diagrams/aurorae_system_architecture.png)
 
 ---
