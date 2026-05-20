@@ -1,10 +1,19 @@
 # AURORAE
 
+> Status: Phase 1 build in progress • 5x5 ESP32 + LED + NFC prototype • Parts arriving
+
 **AURORAE is a modular smart tabletop gaming platform that brings lighting, sensing, embedded logic, and physical gameplay together.**
 
-The Phase 1 prototype is a 5x5 proof-of-concept board using an ESP32 controller, WS2812B addressable LEDs, NFC/RFID tile detection, and simple word/game logic. The goal is to prove that physical letter tiles can be detected, mapped to board positions, and used to trigger scoring, lighting feedback, and interactive gameplay.
+## Problem → Concept → Prototype
 
-> Status: Phase 1 build in progress. Parts are being assembled for the first functional 5x5 prototype. This repository documents the architecture, build direction, and prototype evidence as AURORAE moves from concept to working hardware.
+**Problem**  
+Traditional word-board games preserve physical social play, but scoring, word validation, turn management, and learning support are still mostly manual. Fully digital games solve some of these problems but often lose the tactile, face-to-face experience that makes tabletop games enjoyable.
+
+**Concept**  
+AURORAE is a modular smart tabletop gaming platform that combines physical letter tiles with embedded sensing, addressable LED feedback, and game logic. The goal is to keep the feel of a real board game while adding automatic tile recognition, scoring support, interactive lighting, and future educational or tournament features.
+
+**Prototype**  
+The current Phase 1 build is a 5x5 proof-of-concept board using an ESP32 controller, WS2812B addressable LEDs, NFC/RFID tile detection, and simple word/game logic. The first working demo aims to detect tagged tiles, trigger LED feedback, map board positions, and demonstrate a basic word such as CAT or DOG.
 
 ![AURORAE system architecture](docs/architecture/diagrams/aurorae_system_architecture.png)
 
